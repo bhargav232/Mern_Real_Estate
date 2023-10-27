@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv"
 dotenv.config();
+import userrouter from "./Routes/User.route.js"
 
 mongoose.connect(process.env.MONGO)
 .then(()=>{
@@ -17,6 +18,4 @@ app.listen(3000, ()=>{
     console.log("port is running on 3000!")
 })
 
-app.get("/", (req, res)=>{
-    res.send("Hello, How are you?")
-})
+app.use("/api/user", userrouter)
