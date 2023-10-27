@@ -23,3 +23,14 @@ app.use(express.json());
 
 app.use("/api/user", userrouter)
 app.use("/api/auth", signuprouter )
+
+app.use((error,req,res,next)=>{
+
+   const sC = error.statuscode || 500;
+   const msg = error.message || "Internal Server Error";
+   res.status(sC).json({
+    sC,
+    success: false,
+    msg
+   })
+})
