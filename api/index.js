@@ -31,6 +31,7 @@ app.use((error,req,res,next)=>{
    res.status(sC).json({
     sC,
     success: false,
-    msg
+    msg,
+    
    })
 })
