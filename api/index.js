@@ -4,6 +4,7 @@ import dotenv from "dotenv"
 dotenv.config();
 import userrouter from "./Routes/User.route.js"
 import signuprouter from "./Routes/auth.route.js";
+import signinrouter from "./Routes/auth.route.js";
 
 mongoose.connect(process.env.MONGO)
 .then(()=>{
@@ -23,7 +24,10 @@ app.use(express.json());
 
 app.use("/api/user", userrouter)
 app.use("/api/auth", signuprouter )
+app.use("/api/auth", signinrouter)
 
+
+// Middle-ware function for handling errors!
 app.use((error,req,res,next)=>{
 
    const sC = error.statuscode || 500;
