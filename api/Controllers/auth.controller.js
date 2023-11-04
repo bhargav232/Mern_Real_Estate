@@ -1,17 +1,18 @@
 import { MongooseError } from "mongoose"
 import User from "../Modles/User.Model.js"
-import bcrypt from "bcryptjs"
+import bcryptjs from "bcryptjs"
 import { errorHandler } from "../utils/error.js"
 import jwt from "jsonwebtoken"
 export const signup = async(req,res,next) =>
 {
     const {username, email, password } = req.body
-    const hpwd = bcrypt.hashSync(password,10)
+    const hpwd = bcryptjs.hashSync(password,10)
     const newUser  = new User({username, email, password: hpwd})
     try{
    await newUser.save()
    res.status(201).json("user created successfully!");
    } catch(error){
+
     next(error)
     //console.log(error)
    }
@@ -24,11 +25,13 @@ export const signin = async(req,res,next) =>
 
     const validUser = await User.findOne({email})
     if(!validUser){
-        next(errorHandler(404, "User not found in database!"));
+
+       return next(errorHandler(404, "User not found in database!"));
     }
-    const validPassword = bcrypt.compareSync(password , validUser.password)
+    const validPassword = bcryptjs.compareSync(password , validUser.password)
     if(!validPassword){
-        next(errorHandler(401, "Invalid password!"))
+
+       return next(errorHandler(401, "Invalid credentials!"))
     }
     const token = jwt.sign({id: validUser._id}, process.env.JWT_SECRET)
     const {password: pass, ...rest} = validUser._doc; // not send password

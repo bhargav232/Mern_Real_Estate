@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
+import { montrealDate } from "./time";
 function Header() {
   return (
     <header className='bg-blue-100 shadow-md'>
@@ -9,6 +10,7 @@ function Header() {
         <span className='text-gray-500 hover:text-black-700 mx-1'>Bhargav </span>
         <span className="text-black-700 hover:text-gray-500 ">Estate</span>
         </h1>
+        <span className="text-sm text-black-700"> {montrealDate}</span>
         </Link>
         <form className='bg-slate-100 p-1 rounded-lg flex items-center'>
             <input type="text" placeholder='Search... ' className='bg-transparent focus:outline-none w-24 sm:w-64'/>
