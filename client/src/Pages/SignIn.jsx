@@ -1,12 +1,14 @@
 import { useState } from "react";
 import {Link, useNavigate} from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
+import { OAuth } from "../components/OAuth";
 //import { signInFailure, signInStart, signInSucess } from "../redux/user/userSlice";
 import {
   signInStart,
   signInSuccess,
   signInFailure,
 } from '../redux/user/userSlice';
+
 
 export default function SignIn() {
   const { loading, error } = useSelector((state) => state.user);
@@ -49,13 +51,16 @@ export default function SignIn() {
       <h1 className="text-center text-3xl font-bold my-7">
         Sign In
       </h1>
+     
       <form className="flex flex-col gap-4 "onSubmit={handleOnSubmit}>
          <input type="email" placeholder="Email" id="email" className="p-3
         rounded-lg" onChange={handleonChange}/>
          <input type="password" placeholder="Password" id="password" className="p-3 
          rounded-lg" onChange={handleonChange}/>
         <button disabled ={loading} className="bg-blue-500 rounded-lg p-3 text-white hover:opacity-60">{loading? "loading...":"Sign In"}</button>
-      </form>
+        <OAuth/>      
+        </form>
+    
       
       <div className=" flex gap-2 mt-4">
        <p>Dont have an account ?</p>

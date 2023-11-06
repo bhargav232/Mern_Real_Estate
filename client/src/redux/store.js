@@ -23,4 +23,7 @@ export const store = configureStore({
 
 export const persistor = persistStore(store);
 
+// we add redux-persist for store user data in local storage to avoid loss of sign-in data 
+// at the time of refresh
+
 // we add middleware to avoid serialization error between modules
