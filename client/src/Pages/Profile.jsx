@@ -1,25 +1,78 @@
 import {useSelector} from "react-redux"
-import { useRef, useState } from "react"
+import { useRef, useState, useEffect} from "react"
+import {getStorage, uploadBytesResumable, ref, getDownloadURL} from "firebase/storage"
+import {app} from "../fireBase"
+
 export default function Profile() {
 const{currentUser} = useSelector(state => state.user)
 const fileRef = useRef(null)
-const[file, setFile] = useState(undefined)
+const[file, setFile] = useState(undefined) // for image
+const[fileper, setFilePer] = useState(0);
+const[fileUploadError, setFileUploadError] = useState(false);
+const[formData, setFormData] = useState({})
+console.log(fileper)
+console.log(formData)
+
+
+useEffect(()=>{
+   if(file){
+  handleFileUpload(file)
+  }
+}, [file])
+
+const handleFileUpload = (file) => {
+  const storage  = getStorage(app);
+  const fileName = new Date ().getTime() + file.name // for uniquness
+  const storageRef = ref(storage, fileName)
+  const uploadTask = uploadBytesResumable(storageRef, file);
+
+  uploadTask.on(
+    'state_changed',
+    (snapshot) => {
+      const progress =
+        (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      setFilePer(Math.round(progress));
+    },
+    (error) => {
+      setFileUploadError(true);
+    },
+    () => {
+      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) =>
+        setFormData({ ...formData, avatar: downloadURL })
+      );
+    }
+  );
+};
 
   return (
     <div className="p-3 max-w-lg mx-auto">
       <h1 className="text-3xl font-semibold text-center my-7">
         Profile
       </h1>
-      <input onChange ={(e)=>setFile(e.target.files[0])} 
+    
+      <input onChange = {(e)=>{setFile(e.target.files[0])}}
       type = "file" 
-      ref={fileRef } 
+      ref={fileRef} 
       hidden 
       accept="images/*" 
       />
-      {console.log(file)}
       
       <form className="flex flex-col gap-4">
         <img src = {currentUser.avatar} alt = "profile" onClick ={()=>fileRef.current.click()}className= "self-center h-22 w-22 rounded-full object-cover cursor-pointer"/>
+        {/* <spam className = "text-red-500 text-xs text-center">{fileper}</spam> */}
+        <p className='text-sm self-center'>
+          {fileUploadError ? (
+            <span className='text-red-700'>
+              Error Image upload (image must be less than 2 mb)
+            </span>
+          ) : fileper > 0 && fileper < 100 ? (
+            <span className='text-slate-700'>{`Uploading ${fileper}%`}</span>
+          ) : fileper === 100 ? (
+            <span className='text-green-700'>Image successfully uploaded!</span>
+          ) : (
+            ''
+          )}
+        </p>
         <input type="text" placeholder="username"  id="username" className="p-3 border rounded-lg">
         </input>
         <input type="text" placeholder="email" id="email" className="p-3 border rounded-lg">
