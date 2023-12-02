@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-
+localStorage.removeItem('persist:root');
 
 const initialState = {
   currentUser: null,

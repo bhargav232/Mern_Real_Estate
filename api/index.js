@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv"
+import cookieParser from "cookie-parser";
 dotenv.config();
 import userrouter from "./Routes/User.route.js"
 import signuprouter from "./Routes/auth.route.js";
@@ -21,6 +22,7 @@ app.listen(3000, ()=>{
 })
 
 app.use(express.json());
+app.use(cookieParser());
 
 app.use("/api/user", userrouter)
 app.use("/api/auth", signuprouter )

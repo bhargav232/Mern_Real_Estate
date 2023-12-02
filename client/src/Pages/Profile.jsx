@@ -13,6 +13,13 @@ const[formData, setFormData] = useState({})
 console.log(fileper)
 console.log(formData)
 
+const handleonChange = (e) => {
+  setFormData({
+    ...formData,
+    [e.target.id]: e.target.value,
+  });
+};
+
 
 useEffect(()=>{
    if(file){
@@ -57,8 +64,13 @@ const handleFileUpload = (file) => {
       accept="images/*" 
       />
       
-      <form className="flex flex-col gap-4">
-        <img src = {currentUser.avatar} alt = "profile" onClick ={()=>fileRef.current.click()}className= "self-center h-22 w-22 rounded-full object-cover cursor-pointer"/>
+      <form className="flex flex-col gap-4" >
+      <img
+          onClick={() => fileRef.current.click()}
+          src={formData.avatar || currentUser.avatar}
+          alt='profile'
+          className='rounded-full h-24 w-24 object-cover cursor-pointer self-center mt-2'
+        />
         {/* <spam className = "text-red-500 text-xs text-center">{fileper}</spam> */}
         <p className='text-sm self-center'>
           {fileUploadError ? (
@@ -73,12 +85,12 @@ const handleFileUpload = (file) => {
             ''
           )}
         </p>
-        <input type="text" placeholder="username"  id="username" className="p-3 border rounded-lg">
-        </input>
-        <input type="text" placeholder="email" id="email" className="p-3 border rounded-lg">
-        </input>
-        <input type="text" placeholder="password" id="password" className="p-3 border rounded-lg">
-        </input>
+        <input type="text" placeholder="username"  id="username" className="p-3 border rounded-lg "onChange={handleonChange}/>
+       
+        <input type="text" placeholder="email" id="email" className="p-3 border rounded-lg"onChange={handleonChange}/>
+       
+        <input type="text" placeholder="password" id="password" className="p-3 border rounded-lg"onChange={handleonChange}/>
+       
         <button className="bg-blue-400 p-3 border rounded-lg uppercase hover:opacity-80">
           update
         </button>

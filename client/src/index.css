@@ -2,6 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
-body{
-    background-color: rgb(241, 245, 241);
+body {
+    position: relative;
+    z-index: 1;
+    margin: 0; /* Remove default margin */
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(241, 242, 245);
+    background-image: url("https://images.unsplash.com/photo-1582407947304-fd86f028f716?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmVhbCUyMGVzdGF0ZXxlbnwwfHwwfHx8MA%3D%3D");
+    background-size: cover; /* Ensures the image covers the entire container */
+    background-position: center; /* Centers the image within the container */
+    opacity: 0.5;
+    z-index: -1;
 }
