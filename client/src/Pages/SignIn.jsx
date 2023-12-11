@@ -7,12 +7,16 @@ import {
   signInStart,
   signInSuccess,
   signInFailure,
+  
 } from '../redux/user/userSlice';
-
 
 export default function SignIn() {
   const { loading, error } = useSelector((state) => state.user);
-  const [formData, setFormData] = useState({});
+  console.log(error)
+  const [formData, setFormData] = useState({
+    email: null,
+    password: null
+  });
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -36,7 +40,7 @@ export default function SignIn() {
     const data = await res.json();
     console.log(data)
     if(data.success == false){
-     dispatch(signInFailure(data.message))
+     dispatch(signInFailure(data.msg))
       return;
     }
    dispatch(signInSuccess(data))
@@ -67,8 +71,10 @@ export default function SignIn() {
        <Link to ={"/sign-up"}>
         <span className="text-blue-900 font-semibold">Sign up</span>
         </Link> 
+      
       </div>
-      {error && <p className="text-red-500">{error}</p>}
+      <p className='text-red-700 mt-5 font-semibold text-center mt-1'> {error ? `Error: ${error }`: ''}</p>
+
     </div>
   )
 }

@@ -1,7 +1,7 @@
 import {useSelector} from "react-redux"
 import { useRef, useState, useEffect} from "react"
 import {getStorage, uploadBytesResumable, ref, getDownloadURL} from "firebase/storage"
-import { updateUserStart, updateUserSuccess, updateUserFailure } from "../redux/user/userSlice"
+import { updateUserStart, updateUserSuccess, updateUserFailure, deleteUserStart, deleteUserSuccess, deleteUserFailure } from "../redux/user/userSlice"
 import {app} from "../fireBase"
 import { useDispatch } from "react-redux"
 export default function Profile() {
@@ -18,8 +18,8 @@ const dispatch = useDispatch();
 console.log(fileper)
 console.log(formData)
 
-console.log(loading)
-console.log(error)
+//console.log(loading)
+//console.log(error)
 
 useEffect(() => {
   if (file) {
@@ -93,6 +93,29 @@ const  handleSubmit = async(e)=>{
 
 }
 
+ const handleDeleteUser = async(e)=>{
+  e.preventDefault();
+  try{
+    dispatch(deleteUserStart())
+    const res = await fetch(`/api/user/delete/${currentUser._id}`,{
+      method: 'DELETE',
+    })
+    const data = await res.json();
+    if(data.success === false)
+    {
+      dispatch(deleteUserFailure())
+      return;
+    }
+    dispatch(deleteUserSuccess())
+  }
+  catch(e)
+  {
+    dispatch(deleteUserFailure(e.message))
+
+  }
+
+ }
+
   return (
     <div className="p-3 max-w-lg mx-auto">
       <h1 className="text-3xl font-semibold text-center my-7">
@@ -148,20 +171,20 @@ const  handleSubmit = async(e)=>{
       </form>
       <div className='flex justify-between mt-5'>
         <span
-          //onClick={handleDeleteUser}
-          className='text-red-700 cursor-pointer font-bold '
+          onClick={handleDeleteUser}
+          className='text-red-700 cursor-pointer font-semibold '
         >
           Delete account ?
         </span>
         <span 
         //onClick={handleSignOut}
-         className='text-red-700 cursor-pointer font-bold'>
+         className='text-red-700 cursor-pointer font-semibold'>
           Sign out ?
         </span>
       </div>
 
-      <p className='text-red-700 mt-5 font-bold text-center'> {error ? `Error: ${error }`: ''}</p>
-      <p className="text-red-700 mt-5 font-bold text-center"> {updateSucess? "User Updated sucuessfully! ": ""}</p>
+      <p className='text-red-700 mt-5 font-semibold text-center'> {error ? `Error: ${error }`: ''}</p>
+      <p className="text-red-700 mt-5 font-semibold text-center"> {updateSucess? "User Updated sucuessfully! ": ""}</p>
        
     </div>
   )

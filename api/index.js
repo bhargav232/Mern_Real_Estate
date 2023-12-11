@@ -32,7 +32,6 @@ app.use("/api/auth", signinrouter)
 
 // Middle-ware function for handling errors!
 app.use((err,req,res,next)=>{
-
    const sC = err.statuscode || 500;
    const msg = err.message || "Internal Server Error";
    res.status(sC).json({
