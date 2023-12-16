@@ -4,8 +4,8 @@ import dotenv from "dotenv"
 import cookieParser from "cookie-parser";
 dotenv.config();
 import userrouter from "./Routes/User.route.js"
-import signuprouter from "./Routes/auth.route.js";
-import signinrouter from "./Routes/auth.route.js";
+import signrouter from "./Routes/auth.route.js";
+//import signinrouter from "./Routes/auth.route.js";
 
 mongoose.connect(process.env.MONGO)
 .then(()=>{
@@ -25,8 +25,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api/user", userrouter)
-app.use("/api/auth", signuprouter )
-app.use("/api/auth", signinrouter)
+app.use("/api/auth", signrouter )
+//app.use("/api/auth", signinrouter)
 
 
 

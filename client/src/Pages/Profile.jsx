@@ -1,7 +1,9 @@
 import {useSelector} from "react-redux"
 import { useRef, useState, useEffect} from "react"
 import {getStorage, uploadBytesResumable, ref, getDownloadURL} from "firebase/storage"
-import { updateUserStart, updateUserSuccess, updateUserFailure, deleteUserStart, deleteUserSuccess, deleteUserFailure } from "../redux/user/userSlice"
+import { updateUserStart, updateUserSuccess, updateUserFailure, 
+  deleteUserStart, deleteUserSuccess, deleteUserFailure,
+signOutUserStart, signOutUserSuccess, signOutUserFailure } from "../redux/user/userSlice"
 import {app} from "../fireBase"
 import { useDispatch } from "react-redux"
 export default function Profile() {
@@ -115,6 +117,27 @@ const  handleSubmit = async(e)=>{
   }
 
  }
+ const handleSignOut= async(e)=>{
+  e.preventDefault();
+  try{
+    dispatch(signOutUserStart())
+    const res = await fetch("/api/auth/signout",{
+    method : "GET"
+  })
+  const data = await res.json();
+  //console.log(data)
+    if(data.success === false) {
+      dispatch(signOutUserFailure())
+      return;
+    }
+    dispatch(signOutUserSuccess())
+  }
+  catch(error){
+    dispatch(signOutUserFailure(error.message))
+
+  }
+
+ }
 
   return (
     <div className="p-3 max-w-lg mx-auto">
@@ -177,7 +200,7 @@ const  handleSubmit = async(e)=>{
           Delete account ?
         </span>
         <span 
-        //onClick={handleSignOut}
+        onClick={handleSignOut}
          className='text-red-700 cursor-pointer font-semibold'>
           Sign out ?
         </span>
