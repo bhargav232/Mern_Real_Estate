@@ -25,6 +25,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api/user", userrouter)
+// name signrouter is alias we can use any name of our choice!
+
 app.use("/api/auth", signrouter )
 //app.use("/api/auth", signinrouter)
 
